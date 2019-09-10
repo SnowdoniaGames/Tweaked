@@ -1,0 +1,11 @@
+# Ignore everything
+/*
+
+# But not these files...
+!/src
+!.gitignore
+!README.md
+!LICENSE
+!mkdocs.yml
+!docs
+!build.gradle
