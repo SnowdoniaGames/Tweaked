@@ -1,0 +1,46 @@
+[
+{
+  "modid": "tweaked",
+  "name": "Tweaked",
+  "description": "Minecraft/Mod Tweaks and Scripting Language",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/SnowdoniaGames/Tweaked",
+  "updateUrl": "",
+  "authorList": ["Snowdonia Games"],
+  "credits": "Created by Snowdonia Games",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+},
+{
+  "modid": "tweaked_vanilla",
+  "name": "Tweaked_Vanilla",
+  "description": "Vanilla Tweaks",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+ "url": "https://github.com/SnowdoniaGames/Tweaked",
+  "updateUrl": "",
+  "authorList": ["Snowdonia Games"],
+  "credits": "Created by Snowdonia Games",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": [],
+  "parent": "tweaked"
+},
+{
+  "modid": "tweaked_jei",
+  "name": "Tweaked_JEI",
+  "description": "JEI Tweaks",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+"url": "https://github.com/SnowdoniaGames/Tweaked",
+  "updateUrl": "",
+  "authorList": ["Snowdonia Games"],
+  "credits": "Thank you to mezz for creating JEI",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": [],
+  "parent": "tweaked"
+}
+]
