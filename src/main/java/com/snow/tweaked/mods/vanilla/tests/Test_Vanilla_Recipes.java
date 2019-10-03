@@ -30,7 +30,7 @@ public class Test_Vanilla_Recipes
         @Override
         public String getTestDescription()
         {
-            return "crafting - remove";
+            return "recipes.remove";
         }
 
         @Override
@@ -83,7 +83,7 @@ public class Test_Vanilla_Recipes
         @Override
         public String getTestDescription()
         {
-            return "crafting - shaped";
+            return "recipes.shaped";
         }
 
         @Override
@@ -135,7 +135,7 @@ public class Test_Vanilla_Recipes
         @Override
         public String getTestDescription()
         {
-            return "crafting - shapeless";
+            return "recipes.shapeless";
         }
 
         @Override

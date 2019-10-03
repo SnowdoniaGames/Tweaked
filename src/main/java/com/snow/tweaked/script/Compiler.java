@@ -78,17 +78,17 @@ public class Compiler
                         if (comment) break;
                         if (varOpen > 0)
                         {
-                            ScriptHelper.throwScriptError(lineCount, "Line ended before closing a arguments");
+                            ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Line ended before closing a arguments");
                             return null;
                         }
                         if (listOpen)
                         {
-                            ScriptHelper.throwScriptError(lineCount, "Line ended before closing a list");
+                            ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Line ended before closing a list");
                             return null;
                         }
                         if (quoteOpen)
                         {
-                            ScriptHelper.throwScriptError(lineCount, "Line ended before closing a string");
+                            ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Line ended before closing a string");
                             return null;
                         }
                         if (!commit(read())) return null;
@@ -121,7 +121,7 @@ public class Compiler
                         if (comment) break;
                         if (varOpen == 0)
                         {
-                            ScriptHelper.throwScriptError(lineCount, "Attempting to close unopened arguments");
+                            ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Attempting to close unopened arguments");
                             return null;
                         }
                         varOpen--;
@@ -137,7 +137,7 @@ public class Compiler
                         if (comment) break;
                         if (!listOpen || listHolder == null)
                         {
-                            ScriptHelper.throwScriptError(lineCount, "Attempting to close unopened list");
+                            ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Attempting to close unopened list");
                             return null;
                         }
                         if(!commit(read())) return null;
@@ -173,7 +173,7 @@ public class Compiler
 
                         if (!logicOpen || logicHolder == null)
                         {
-                            ScriptHelper.throwScriptError(lineCount, "Attempting to close unopened logic");
+                            ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Attempting to close unopened logic");
                             return null;
                         }
                         logicOpen = false;
@@ -236,13 +236,13 @@ public class Compiler
                 //line must start with commands, therefore must be a string id
                 if (!(commit instanceof String))
                 {
-                    ScriptHelper.throwScriptError(lineCount, "Line must start with a command");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Line must start with a command");
                     return false;
                 }
 
                 if (listOpen && listHolder != null)
                 {
-                    ScriptHelper.throwScriptError(lineCount, "List cannot contain a command");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "List cannot contain a command");
                     return false;
                 }
                 else if (logicOpen && logicHolder != null)
@@ -305,7 +305,7 @@ public class Compiler
                 }
             }
         }
-        ScriptHelper.throwScriptError(lineCount, "Missing lex list");
+        ScriptHelper.throwScriptError(ScriptHelper.fileName, lineCount, "Missing lex list");
         return false;
     }
 

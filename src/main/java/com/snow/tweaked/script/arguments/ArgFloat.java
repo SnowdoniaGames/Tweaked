@@ -8,7 +8,7 @@ public class ArgFloat implements IArgument
 {
     private static final Pattern pattern = Pattern.compile("^-?[0-9]*\\.?[0-9]+$");
 
-    private float value;
+    public float value;
 
     public ArgFloat() { }
 

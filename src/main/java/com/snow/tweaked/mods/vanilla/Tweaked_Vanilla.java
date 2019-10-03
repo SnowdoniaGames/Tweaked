@@ -4,6 +4,7 @@ import com.snow.tweaked.Tweaked;
 import com.snow.tweaked.annotation.TweakedMod;
 import com.snow.tweaked.api.ITweakedMod;
 import com.snow.tweaked.controllers.TweakedConfig;
+import com.snow.tweaked.mods.vanilla.actions.Action_Vanilla_Furnace;
 import com.snow.tweaked.mods.vanilla.actions.Action_Vanilla_Recipes;
 import com.snow.tweaked.mods.vanilla.helpers.Helper_Vanilla_Recipes;
 import com.snow.tweaked.mods.vanilla.proxy.Proxy_Vanilla_Common;
@@ -59,6 +60,12 @@ public class Tweaked_Vanilla
             Action_Vanilla_Recipes.REMOVE.apply();
             Action_Vanilla_Recipes.SHAPED.apply();
             Action_Vanilla_Recipes.SHAPELESS.apply();
+
+            //furnace
+            Action_Vanilla_Furnace.REMOVE.apply();
+            Action_Vanilla_Furnace.ADD.apply();
+            Action_Vanilla_Furnace.REMOVE_FUEL.apply();
+            Action_Vanilla_Furnace.ADD_FUEL.apply();
 
             //create dummy recipes
             Helper_Vanilla_Recipes.createDummyRecipes();

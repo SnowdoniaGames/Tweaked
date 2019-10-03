@@ -41,12 +41,12 @@ public class Assembler
             {
                 if (!((IFunction) token).applyDefines(defines))
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Unable to determine defined variables for '" + token.print() + "'");
+                    ScriptHelper.throwScriptError(null, null,"Unable to determine defined variables for '" + token.print() + "'");
                     return null;
                 }
                 if (!((IFunction) token).apply(null))
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Unable to apply function '" + token.print() + "'");
+                    ScriptHelper.throwScriptError(null, null,"Unable to apply function '" + token.print() + "'");
                     return null;
                 }
             }
@@ -88,7 +88,7 @@ public class Assembler
                         case IGNORE:
                             break;
                         case COMMA:
-                            ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Variable cannot contain ','");
+                            ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Variable cannot contain ','");
                             return null;
                         case VAR_OPEN:
                             varOpen = true;
@@ -97,12 +97,12 @@ public class Assembler
                             {
                                 if (varType == null)
                                 {
-                                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Modifiers must follow a valid arguments");
+                                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Modifiers must follow a valid arguments");
                                     return null;
                                 }
                                 if (modifier != null)
                                 {
-                                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Previous modifier was not closed");
+                                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Previous modifier was not closed");
                                     return null;
                                 }
                                 modifier = read();
@@ -116,7 +116,7 @@ public class Assembler
                         case VAR_CLOSE:
                             if (!varOpen)
                             {
-                                ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Attempting to close unopened arguments");
+                                ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Attempting to close unopened arguments");
                                 return null;
                             }
                             varOpen = false;
@@ -125,7 +125,7 @@ public class Assembler
                             {
                                 if (modifier == null)
                                 {
-                                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Attempting to close a missing modifier");
+                                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Attempting to close a missing modifier");
                                     return null;
                                 }
                                 modifiers.add(new Tuple<>(modifier, read()));
@@ -142,7 +142,7 @@ public class Assembler
                         case PERIOD:
                             if (modOpen)
                             {
-                                ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Previous modifier was not closed");
+                                ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Previous modifier was not closed");
                                 return null;
                             }
 
@@ -174,7 +174,7 @@ public class Assembler
                     var = var.addModifier(mod.getFirst(), mod.getSecond());
                     if (var == null)
                     {
-                        ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Unable to add modifer");
+                        ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Unable to add modifer");
                         return null;
                     }
                 }
@@ -189,12 +189,12 @@ public class Assembler
     {
         if (in.isEmpty())
         {
-            ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Lists cannot be empty");
+            ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Lists cannot be empty");
             return null;
         }
         if (in.stream().map(IArgument::getClass).distinct().count() > 1)
         {
-            ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Lists cannot contain variables of different types");
+            ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Lists cannot contain variables of different types");
             return null;
         }
 
@@ -219,7 +219,7 @@ public class Assembler
         {
             return new ArgFluidList(in.stream().map(var -> (ArgFluid) var).collect(Collectors.toList()));
         }
-        ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Unknown list type");
+        ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Unknown list type");
         return null;
     }
 
@@ -270,13 +270,13 @@ public class Assembler
                     }
                     else if (listToken instanceof TokenList)
                     {
-                        ScriptHelper.throwScriptError(ScriptHelper.lineCount, "List cannot contain another list");
+                        ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "List cannot contain another list");
                         return null;
                     }
                 }
                 if (varList.isEmpty())
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "List cannot be empty");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "List cannot be empty");
                     return null;
                 }
                 IArgument list = parseList(varList);
@@ -319,7 +319,7 @@ public class Assembler
             {
                 if (functionHolder != null)
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Attempting to parse command before ending the previous one");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Attempting to parse command before ending the previous one");
                     return null;
                 }
 
@@ -328,14 +328,14 @@ public class Assembler
                 {
                     if (command.match(functionName))
                     {
-                        functionHolder = command.build(functionName);
+                        functionHolder = command.build(functionName.toLowerCase());
                         break;
                     }
                 }
 
                 if (functionHolder == null)
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Failed to find command '" + functionName + "'");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Failed to find command '" + functionName + "'");
                     return null;
                 }
             }
@@ -343,12 +343,12 @@ public class Assembler
             {
                 if (functionHolder == null)
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Failed to parse command");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Failed to parse command");
                     return null;
                 }
                 if (!functionHolder.validate())
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Failed to validate command");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Failed to validate command");
                     return null;
                 }
 
@@ -359,7 +359,7 @@ public class Assembler
             {
                 if (functionHolder == null)
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Attempting to parse logic block before a command has been defined");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Attempting to parse logic block before a command has been defined");
                     return null;
                 }
 
@@ -371,13 +371,13 @@ public class Assembler
 
                 if (!functionHolder.addArg(logicList))
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Failed to parse arguments into command");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Failed to parse arguments into command");
                     return null;
                 }
 
                 if (!functionHolder.validate())
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Failed to validate command");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Failed to validate command");
                     return null;
                 }
 
@@ -388,13 +388,13 @@ public class Assembler
             {
                 if (functionHolder == null)
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Attempting to parse arguments before a command has been defined");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Attempting to parse arguments before a command has been defined");
                     return null;
                 }
 
                 if (!functionHolder.addArg(token))
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Failed to parse arguments into command");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Failed to parse arguments into command");
                     return null;
                 }
             }

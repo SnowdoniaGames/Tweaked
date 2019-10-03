@@ -8,7 +8,7 @@ public class ArgInteger implements IArgument
 {
     private static final Pattern pattern = Pattern.compile("^-?\\d+$");
 
-    private int value;
+    public int value;
 
     public ArgInteger()
     {

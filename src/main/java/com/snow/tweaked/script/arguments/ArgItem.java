@@ -83,7 +83,7 @@ public class ArgItem implements IArgument, IIngredient
                 }
                 catch (NBTException e)
                 {
-                    ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Warning : Failed to parse NBT \"" + val + "\"");
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Warning : Failed to parse NBT \"" + val + "\"");
                 }
                 break;
             case "enchant":
@@ -175,7 +175,7 @@ public class ArgItem implements IArgument, IIngredient
                     //check level is valid
                     if (level < enchant.getMinLevel() || level > enchant.getMaxLevel())
                     {
-                        ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" has a too low/high specified level");
+                        ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" has a too low/high specified level");
                         return false;
                     }
 
@@ -184,7 +184,7 @@ public class ArgItem implements IArgument, IIngredient
             }
             catch (NumberFormatException e)
             {
-                ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" must have an integer as the second argument");
+                ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" must have an integer as the second argument");
                 return false;
             }
         }
@@ -201,7 +201,7 @@ public class ArgItem implements IArgument, IIngredient
                     //check level is valid
                     if (level < enchant.getMinLevel() || level > enchant.getMaxLevel())
                     {
-                        ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" has a too low/high specified level");
+                        ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" has a too low/high specified level");
                         return false;
                     }
 
@@ -210,13 +210,13 @@ public class ArgItem implements IArgument, IIngredient
             }
             catch (NumberFormatException e)
             {
-                ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" must have an integer as the second argument");
+                ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" must have an integer as the second argument");
                 return false;
             }
         }
         else
         {
-            ScriptHelper.throwScriptError(ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" can only have 2 arguments");
+            ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Enchantment Modifier \"" + in + "\" can only have 2 arguments");
             return false;
         }
 
