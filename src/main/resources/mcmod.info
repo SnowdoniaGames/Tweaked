@@ -19,7 +19,7 @@
   "description": "Vanilla Tweaks",
   "version": "${version}",
   "mcversion": "${mcversion}",
- "url": "https://github.com/SnowdoniaGames/Tweaked",
+  "url": "https://github.com/SnowdoniaGames/Tweaked",
   "updateUrl": "",
   "authorList": ["Snowdonia Games"],
   "credits": "Created by Snowdonia Games",
@@ -34,7 +34,7 @@
   "description": "JEI Tweaks",
   "version": "${version}",
   "mcversion": "${mcversion}",
-"url": "https://github.com/SnowdoniaGames/Tweaked",
+  "url": "https://github.com/SnowdoniaGames/Tweaked",
   "updateUrl": "",
   "authorList": ["Snowdonia Games"],
   "credits": "Thank you to mezz for creating JEI",
@@ -42,5 +42,20 @@
   "screenshots": [],
   "dependencies": [],
   "parent": "tweaked"
-}
+ },
+{
+  "modid": "tweaked_te",
+  "name": "Tweaked_TE",
+  "description": "Thermal Expansion Tweaks",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/SnowdoniaGames/Tweaked",
+  "updateUrl": "",
+  "authorList": ["Snowdonia Games"],
+  "credits": "Thank you to Team CoFH for creating Thermal Expansion",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": [],
+  "parent": "tweaked"
+  }
 ]
