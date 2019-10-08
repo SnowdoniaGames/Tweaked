@@ -124,7 +124,7 @@ public class Action_Vanilla_Furnace
                     }
 
                     //debug
-                    LOG.debug("furnace.remove : " + (FurnaceRecipes.instance().getSmeltingList().size() - newRecipes.size()) + " furnace recipes");
+                    LOG.debug("furnace.remove : " + (FurnaceRecipes.instance().getSmeltingList().size() - newRecipes.size()) + " recipes");
 
                     FurnaceRecipes.instance().getSmeltingList().clear();
                     for (Map.Entry<ItemStack, ItemStack> entry : newRecipes.entrySet())

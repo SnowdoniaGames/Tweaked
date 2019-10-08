@@ -1,35 +1,36 @@
-package com.snow.tweaked.mods.vanilla.tests;
+package com.snow.tweaked.mods.thermalexpansion.tests;
 
+import cofh.core.inventory.ComparableItemStack;
+import cofh.thermalexpansion.util.managers.device.FisherManager;
 import com.snow.tweaked.annotation.TweakedTest;
 import com.snow.tweaked.api.ITweakedTest;
+import com.snow.tweaked.mods.thermalexpansion.helpers.Helper_TE_Reflection;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 
-import java.util.Map;
+import java.util.List;
 
-@SuppressWarnings("unused")
-public class Test_Vanilla_Furnace
+public class Test_TE_Fisher
 {
     //**************************************************************************************//
-    //											add											//
+    //										fisher.add										//
     //**************************************************************************************//
 
-    @TweakedTest()
-    public static class Test_Furnace_Add implements ITweakedTest
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Fisher_Add implements ITweakedTest
     {
         @Override
         public String getFilename()
         {
-            return "furnace";
+            return "thermalexpansion";
         }
 
         @Override
         public String getTestDescription()
         {
-            return "furnace.add";
+            return "te.fisher.add";
         }
 
         @Override
@@ -42,45 +43,86 @@ public class Test_Vanilla_Furnace
         public String[] getActions()
         {
             return new String[] {
-                    "furnace.add : item(minecraft:emerald), item(minecraft:diamond), 1.0;"
+                    "te.fisher.add : item(minecraft:emerald), 1;"
             };
         }
 
         @Override
         public boolean runTest(World world)
         {
-            for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.instance().getSmeltingList().entrySet())
+            //simulate catching 100 fish
+            for (int i = 0; i < 100; i++)
             {
-                if (entry.getKey().getItem().equals(Items.DIAMOND))
+                ItemStack fish = FisherManager.getFish();
+                if (fish == null || fish.getItem() != Items.EMERALD)
                 {
-                    if (entry.getValue().getItem().equals(Items.EMERALD))
-                    {
-                        return true;
-                    }
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     }
 
 
     //**************************************************************************************//
-    //											remove										//
+    //										fisher.remove									//
     //**************************************************************************************//
 
-    @TweakedTest()
-    public static class Test_Furnace_Remove implements ITweakedTest
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Fisher_Remove implements ITweakedTest
     {
         @Override
         public String getFilename()
         {
-            return "furnace";
+            return "thermalexpansion";
         }
 
         @Override
         public String getTestDescription()
         {
-            return "furnace.remove";
+            return "te.fisher.remove";
+        }
+
+        @Override
+        public String[] getVariables()
+        {
+            return new String[0];
+        }
+
+        @Override
+        public String[] getActions()
+        {
+            return new String[]{
+                    "te.fisher.remove : *;"
+            };
+        }
+
+        @Override
+        public boolean runTest(World world)
+        {
+            List<ItemStack> fish = Helper_TE_Reflection.getFishList();
+            return fish != null && fish.size() == 1;
+        }
+    }
+
+
+    //**************************************************************************************//
+    //									fisher.bait.add										//
+    //**************************************************************************************//
+
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Fisher_Bait_Add implements ITweakedTest
+    {
+        @Override
+        public String getFilename()
+        {
+            return "thermalexpansion";
+        }
+
+        @Override
+        public String getTestDescription()
+        {
+            return "te.fisher.bait.add";
         }
 
         @Override
@@ -93,35 +135,35 @@ public class Test_Vanilla_Furnace
         public String[] getActions()
         {
             return new String[] {
-                    "furnace.remove : *;"
+                    "te.fisher.bait.add : item(minecraft:diamond), 5;"
             };
         }
 
         @Override
         public boolean runTest(World world)
         {
-            return FurnaceRecipes.instance().getSmeltingList().size() == 1;
+            return FisherManager.getBaitMultiplier(new ItemStack(Items.DIAMOND)) == 5;
         }
     }
 
 
     //**************************************************************************************//
-    //										fuel.add										//
+    //									fisher.bait.remove									//
     //**************************************************************************************//
 
-    @TweakedTest()
-    public static class Test_Furnace_AddFuel implements ITweakedTest
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Fisher_Bait_Remove implements ITweakedTest
     {
         @Override
         public String getFilename()
         {
-            return "furnace";
+            return "thermalexpansion";
         }
 
         @Override
         public String getTestDescription()
         {
-            return "furnace.fuel.add";
+            return "te.fisher.bait.remove";
         }
 
         @Override
@@ -133,56 +175,16 @@ public class Test_Vanilla_Furnace
         @Override
         public String[] getActions()
         {
-            return new String[] {
-                    "furnace.fuel.add : item(minecraft:diamond), 8000;"
+            return new String[]{
+                    "te.fisher.bait.remove : *;"
             };
         }
 
         @Override
         public boolean runTest(World world)
         {
-            return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.DIAMOND)) == 8000;
-        }
-    }
-
-
-    //**************************************************************************************//
-    //										fuel.remove										//
-    //**************************************************************************************//
-
-    @TweakedTest()
-    public static class Test_Furnace_RemoveFuel implements ITweakedTest
-    {
-        @Override
-        public String getFilename()
-        {
-            return "furnace";
-        }
-
-        @Override
-        public String getTestDescription()
-        {
-            return "furnace.fuel.remove";
-        }
-
-        @Override
-        public String[] getVariables()
-        {
-            return new String[0];
-        }
-
-        @Override
-        public String[] getActions()
-        {
-            return new String[] {
-                    "furnace.fuel.remove : *;"
-            };
-        }
-
-        @Override
-        public boolean runTest(World world)
-        {
-            return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL)) == 0;
+            TObjectIntHashMap<ComparableItemStack> bait = Helper_TE_Reflection.getBait();
+            return bait != null && bait.size() == 1;
         }
     }
 }

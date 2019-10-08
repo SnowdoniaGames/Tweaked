@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.0.1"
+version = "1.0.2"
 group = "com.snow.tweaked"
 archivesBaseName = "tweaked"
 
@@ -26,6 +26,12 @@ minecraft {
 
 dependencies {
     compile files("mods/jei_1.12.2-4.15.0.287.jar")
+	compile files("mods/CodeChickenLib-1.12.2-3.2.3.358-universal.jar")
+	compile files("mods/CoFHCore-1.12.2-4.6.3.27-universal.jar")
+	compile files("mods/CoFHWorld-1.12.2-1.3.1.7-universal.jar")
+	compile files("mods/RedstoneFlux-1.12-2.1.0.6-universal.jar")
+	compile files("mods/ThermalExpansion-1.12.2-5.5.4.43-universal.jar")
+	compile files("mods/ThermalFoundation-1.12.2-2.6.3.27-universal.jar")
 }
 
 processResources {

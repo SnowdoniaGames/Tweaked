@@ -20,6 +20,7 @@ public class TweakedConfig
     //config mods
     public static boolean modsEnableVanilla = true;
     public static boolean modsEnableJEI = true;
+    public static boolean modsEnableThermalExpansion = true;
 
     //config logging
     public static boolean logToSystem = true;
@@ -54,6 +55,7 @@ public class TweakedConfig
 
             modsEnableVanilla = config.getBoolean("vanilla", CATEGORY_MODS, modsEnableVanilla, "Enables Vanilla module.");
             modsEnableJEI = config.getBoolean("jei", CATEGORY_MODS, modsEnableJEI, "Enables Just Enough Items (JEI) module.");
+            modsEnableThermalExpansion = config.getBoolean("thermal expansion", CATEGORY_MODS, modsEnableThermalExpansion, "Enables Thermal Expansion (TE) module.");
 
             //logging
             config.addCustomCategoryComment(CATEGORY_LOGGING, "TweakedLogger to files and system output");

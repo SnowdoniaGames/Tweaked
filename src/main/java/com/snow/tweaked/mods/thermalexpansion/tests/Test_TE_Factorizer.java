@@ -1,35 +1,33 @@
-package com.snow.tweaked.mods.vanilla.tests;
+package com.snow.tweaked.mods.thermalexpansion.tests;
 
+import cofh.thermalexpansion.util.managers.device.FactorizerManager;
 import com.snow.tweaked.annotation.TweakedTest;
 import com.snow.tweaked.api.ITweakedTest;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 
-import java.util.Map;
+import static cofh.thermalexpansion.util.managers.device.FactorizerManager.*;
 
-@SuppressWarnings("unused")
-public class Test_Vanilla_Furnace
+public class Test_TE_Factorizer
 {
     //**************************************************************************************//
-    //											add											//
+    //										split.add										//
     //**************************************************************************************//
 
-    @TweakedTest()
-    public static class Test_Furnace_Add implements ITweakedTest
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Factorizer_AddSplit implements ITweakedTest
     {
         @Override
         public String getFilename()
         {
-            return "furnace";
+            return "thermalexpansion";
         }
 
         @Override
         public String getTestDescription()
         {
-            return "furnace.add";
+            return "te.factorizer.split.add";
         }
 
         @Override
@@ -42,45 +40,36 @@ public class Test_Vanilla_Furnace
         public String[] getActions()
         {
             return new String[] {
-                    "furnace.add : item(minecraft:emerald), item(minecraft:diamond), 1.0;"
+                    "te.factorizer.split.add : item(minecraft:diamond).count(9), item(minecraft:emerald);"
             };
         }
 
         @Override
         public boolean runTest(World world)
         {
-            for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.instance().getSmeltingList().entrySet())
-            {
-                if (entry.getKey().getItem().equals(Items.DIAMOND))
-                {
-                    if (entry.getValue().getItem().equals(Items.EMERALD))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            FactorizerRecipe recipe = FactorizerManager.getRecipe(new ItemStack(Items.EMERALD), true);
+            return recipe != null;
         }
     }
 
 
     //**************************************************************************************//
-    //											remove										//
+    //										split.remove									//
     //**************************************************************************************//
 
-    @TweakedTest()
-    public static class Test_Furnace_Remove implements ITweakedTest
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Factorizer_RemoveSplit implements ITweakedTest
     {
         @Override
         public String getFilename()
         {
-            return "furnace";
+            return "thermalexpansion";
         }
 
         @Override
         public String getTestDescription()
         {
-            return "furnace.remove";
+            return "te.factorizer.split.remove";
         }
 
         @Override
@@ -93,35 +82,35 @@ public class Test_Vanilla_Furnace
         public String[] getActions()
         {
             return new String[] {
-                    "furnace.remove : *;"
+                    "te.factorizer.split.remove : *;"
             };
         }
 
         @Override
         public boolean runTest(World world)
         {
-            return FurnaceRecipes.instance().getSmeltingList().size() == 1;
+            return FactorizerManager.getRecipeList(true).length == 1;
         }
     }
 
 
     //**************************************************************************************//
-    //										fuel.add										//
+    //										combine.add										//
     //**************************************************************************************//
 
-    @TweakedTest()
-    public static class Test_Furnace_AddFuel implements ITweakedTest
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Factorizer_AddCombine implements ITweakedTest
     {
         @Override
         public String getFilename()
         {
-            return "furnace";
+            return "thermalexpansion";
         }
 
         @Override
         public String getTestDescription()
         {
-            return "furnace.fuel.add";
+            return "te.factorizer.combine.add";
         }
 
         @Override
@@ -134,35 +123,36 @@ public class Test_Vanilla_Furnace
         public String[] getActions()
         {
             return new String[] {
-                    "furnace.fuel.add : item(minecraft:diamond), 8000;"
+                    "te.factorizer.combine.add : item(minecraft:emerald), item(minecraft:diamond).count(9);"
             };
         }
 
         @Override
         public boolean runTest(World world)
         {
-            return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.DIAMOND)) == 8000;
+            FactorizerRecipe recipe = FactorizerManager.getRecipe(new ItemStack(Items.DIAMOND, 9), false);
+            return recipe != null;
         }
     }
 
 
     //**************************************************************************************//
-    //										fuel.remove										//
+    //										combine.remove									//
     //**************************************************************************************//
 
-    @TweakedTest()
-    public static class Test_Furnace_RemoveFuel implements ITweakedTest
+    @TweakedTest(modid = "thermalexpansion")
+    public static class Test_Factorizer_RemoveCombine implements ITweakedTest
     {
         @Override
         public String getFilename()
         {
-            return "furnace";
+            return "thermalexpansion";
         }
 
         @Override
         public String getTestDescription()
         {
-            return "furnace.fuel.remove";
+            return "te.factorizer.combine.remove";
         }
 
         @Override
@@ -175,14 +165,14 @@ public class Test_Vanilla_Furnace
         public String[] getActions()
         {
             return new String[] {
-                    "furnace.fuel.remove : *;"
+                    "te.factorizer.combine.remove : *;"
             };
         }
 
         @Override
         public boolean runTest(World world)
         {
-            return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL)) == 0;
+            return FactorizerManager.getRecipeList(false).length == 1;
         }
     }
 }

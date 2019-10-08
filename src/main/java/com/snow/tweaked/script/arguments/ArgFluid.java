@@ -1,12 +1,22 @@
 package com.snow.tweaked.script.arguments;
 
 import com.snow.tweaked.api.script.IArgument;
+import com.snow.tweaked.script.ScriptHelper;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class ArgFluid implements IArgument
 {
     private String fluidName;
+    public FluidStack stack;
 
+    //modifiers
     private Integer count = null;
+    private NBTTagCompound nbt = null;
 
     public ArgFluid() { }
 
@@ -30,14 +40,28 @@ public class ArgFluid implements IArgument
     @Override
     public IArgument addModifier(String name, String val)
     {
-        if (name.equals("count"))
+        switch (name)
         {
-            try
-            {
-                this.count = Integer.parseInt(val);
-                return this;
-            }
-            catch (NumberFormatException ignored) { }
+            case "count":
+            case "c":
+                try
+                {
+                    this.count = Integer.parseInt(val);
+                    return this;
+                }
+                catch (NumberFormatException ignored) { }
+            case "nbt":
+            case "n":
+                try
+                {
+                    this.nbt = JsonToNBT.getTagFromJson(val);
+                    return this;
+                }
+                catch (NBTException e)
+                {
+                    ScriptHelper.throwScriptError(ScriptHelper.fileName, ScriptHelper.lineCount, "Warning : Failed to parse NBT \"" + val + "\"");
+                }
+                break;
         }
         return null;
     }
@@ -45,6 +69,12 @@ public class ArgFluid implements IArgument
     @Override
     public boolean generate()
     {
+        Fluid fluid = FluidRegistry.getFluid(fluidName);
+        if (fluid == null) return false;
+
+        stack = new FluidStack(fluid, count == null ? 1000 : count);
+        if (nbt != null) stack.tag = nbt;
+
         return true;
     }
 

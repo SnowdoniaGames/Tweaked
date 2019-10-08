@@ -20,6 +20,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
@@ -713,5 +714,30 @@ public class ScriptHelper
             current[depth] = inputs.get(depth)[i];
             generatePermutations(inputs, result, depth + 1, current);
         }
+    }
+
+    public static String fluidToScript(FluidStack stackIn)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        FluidStack stack = stackIn.copy();
+
+        //main item
+        sb.append("fluid(").append(stack.getFluid().getName()).append(")");
+
+        //count
+        if (stack.amount != 1000)
+        {
+            sb.append(".count(").append(stack.amount).append(")");
+        }
+
+        //get nbt data
+        int nbt = stack.tag == null ? 0 : stack.tag.getSize();
+        if (nbt > 0)
+        {
+            sb.append(".nbt(").append(stack.tag.toString()).append(")");
+        }
+
+        return sb.toString();
     }
 }
